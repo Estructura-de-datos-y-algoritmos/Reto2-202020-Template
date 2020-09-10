@@ -25,6 +25,13 @@ from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
 assert config
 
+def compareMoviesIds(id1, id2):
+    if id1 > id2:
+        return 1
+    else:
+        return 0
+
+
 """
 En este archivo definimos los TADs que vamos a usar,
 es decir contiene los modelos con los datos en memoria
@@ -32,9 +39,22 @@ es decir contiene los modelos con los datos en memoria
 """
 
 # -----------------------------------------------------
-# API del TAD Catalogo de Libros
+# API del TAD Catalogo de Peliculas
 # -----------------------------------------------------
 
+def newCatalog():
+
+  #  print("CREAR Catalogo...")
+    
+    catalog = {'movies': None
+          }
+
+    catalog['movies'] = lt.newList('SINGLE_LINKED', compareMoviesIds)
+    return catalog
+
+def Addpeli(catalog, row):
+    
+    lt.addLast(catalog["movies"], row)
 
 
 # Funciones para agregar informacion al catalogo
