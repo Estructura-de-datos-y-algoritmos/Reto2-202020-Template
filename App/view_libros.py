@@ -24,7 +24,7 @@ import sys
 import config
 from DISClib.ADT import list as lt
 from DISClib.DataStructures import listiterator as it
-from App import controller
+from App import controller_libros
 assert config
 
 """
@@ -38,40 +38,33 @@ operación seleccionada.
 #  Ruta a los archivos
 # ___________________________________________________
 
+#booksfile = 'GoodReads/books-small.csv'
+#tagsfile = 'GoodReads/tags.csv'
+#booktagsfile = 'GoodReads/book_tags-small.csv'
 
-moviesFile = 'SmallMoviesDetailsCleaned.csv'
-castingFile ='MoviesCastingRaw-small.csv'
-
-
+moviesFile = 'GoodReads/SmallMoviesDetailsCleaned.csv'
+castingFile ='GoodReads/MoviesCastingRaw-small.csv'
 # ___________________________________________________
 #  Funciones para imprimir la inforamación de
 #  respuesta.  La vista solo interactua con
 #  el controlador.
 # ___________________________________________________
-def dar_datos(peliculas):
-    primera = lt.getElement(peliculas, 1)
-    print("Primera Pelicula\n")
-    print("     Titulo: ", primera["original_title"])
-    print("     Fecha de estreno: ", primera["release_date"])
-    print("     Promedio de votación: ", primera["vote_average"])    
-    print("     Numero de votos: ", primera["vote_count"])
-    print("     Idioma: ", primera["original_language"],"\n")
-    
-    primera = lt.getElement(peliculas, peliculas["size"])
-    print("Ultima Pelicula\n")
-    print("     Titulo: ", primera["original_title"])
-    print("     Fecha de estreno: ", primera["release_date"])
-    print("     Promedio de votación: ", primera["vote_average"])    
-    print("     Numero de votos: ", primera["vote_count"])
-    print("     Idioma: ", primera["original_language"],"\n")
 
 
+
+# ___________________________________________________
+#  Menu principal
+# ___________________________________________________
 
 def printMenu():
     print("Bienvenido")
-    print("1- Iniciar Catalogo")
-    print("2- Cargar Peliculas")
-    print("0- Salir")
+    print("1- Inicializar Catálogo")
+    print("2- Cargar información en el catálogo")
+    #print("3- Consultar los libros de un año")
+    #print("4- Consultar los libros de un autor")
+    #print("5- Consultar los Libros por etiqueta")
+    #print("0- Salir")
+
 
 while True:
     printMenu()
@@ -80,20 +73,16 @@ while True:
     if int(inputs[0]) == 1:
         print("Inicializando Catálogo ....")
         # cont es el controlador que se usará de acá en adelante
-        cont = controller.iniciarC()
-        print(lt.size(cont["movies"]))
+        cont = controller_libros.initCatalog()
+        print("imprimo catalogo ... ", cont['movies'])
 
     elif int(inputs[0]) == 2:
-        print("Cargando peliculas")
-        controller.cargar_datos(cont, moviesFile)
-        print("Peliculas cargadas")
-        print(lt.size(cont["movies"]))
-        dar_datos(cont["movies"])
+        print("Cargando información de los archivos ....")
+        controller_libros.loadData(cont, moviesFile,castingFile)
+        print('Peliculas cargadas: ' + str(controller_libros.movieSize(cont)))
+        print('Generos  cargados: ' + str(controller_libros.generosSize(cont)))
+        print('Directores cargados: ' + str(controller_libros.directorsSize(cont)))
 
     else:
         sys.exit(0)
 sys.exit(0)
-
-# ___________________________________________________
-#  Menu principal
-# ___________________________________________________

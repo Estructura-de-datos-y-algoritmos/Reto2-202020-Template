@@ -21,7 +21,7 @@
  """
 
 import config as cf
-from App import model
+from App import model_libros
 import csv
 
 
@@ -37,27 +37,66 @@ recae sobre el controlador.
 #  Inicializacion del catalogo
 # ___________________________________________________
 
-def iniciarC():
-    catalogo = model.newCatalog()
-    return catalogo
+def initCatalog():
+    """
+    Llama la funcion de inicializacion del catalogo del modelo.
+    """
+    # catalog es utilizado para interactuar con el modelo
+    catalog = model_libros.newCatalog()
+    return catalog
 
-def cargar_datos(cont, moviesFile):
-    carga_peliculas(cont, moviesFile)
+
+def loadData(catalogo, moviesFie,castingFile):
+    loadMovies(catalogo,moviesFie)
+    loadCasting(catalogo,castingFile)
 
 
-def carga_peliculas(cont, moviesFile):
-    moviesFile = cf.data_dir + moviesFile
+def loadCasting(catalogo,castingFile):
+    castingFile = cf.data_dir + castingFile
+    #print("ESTa es casting ..", castingFile)
+
+    dialect = csv.excel()
+    dialect.delimiter=";"
+
+  
+    input_file = csv.DictReader(open(castingFile,encoding="utf-8"),dialect=dialect)
+    for casting in input_file:
+        model_libros.addDirectors(catalogo,casting)
+
+
+
+
+def loadMovies(catalogo,moviesFie):
+    moviesFie = cf.data_dir + moviesFie
     #print("ESTa es la pelicula ..", moviesFie)
 
     dialect = csv.excel()
     dialect.delimiter=";"
 
-    input_file = csv.DictReader(open(moviesFile,encoding="utf-8"),dialect=dialect)
+  
+    input_file = csv.DictReader(open(moviesFie,encoding="utf-8"),dialect=dialect)
 
-    for row in input_file:
-        model.Addpeli(cont, row)
+    for movie in input_file:
+        #print("movieee \n",movie)
+        #print("primer genero ",movie['genres'])
+        #break
+        model_libros.addMovie(catalogo, movie)
+        generos = movie['genres'].split("|")
+        for gen in generos:
+            model_libros.addMoviesGeneros(catalogo,gen.strip(),movie)
 
-        
+
+  
+
+def movieSize(catalogo):
+     return model_libros.movieSize(catalogo)
+
+
+def generosSize(catalogo):
+    return model_libros.generosSize(catalogo)
+
+def directorsSize(catalogo):
+    return model_libros.directorsSize(catalogo)
 
 # ___________________________________________________
 #  Funciones para la carga de datos y almacenamiento
