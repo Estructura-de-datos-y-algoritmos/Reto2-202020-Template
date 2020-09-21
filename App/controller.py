@@ -41,8 +41,23 @@ def iniciarC():
     catalogo = model.newCatalog()
     return catalogo
 
+
 def cargar_datos(cont, moviesFile):
     carga_peliculas(cont, moviesFile)
+
+
+
+def cargar_casting(cont, castingFile):
+    castingFile = cf.data_dir + castingFile
+    #print("ESTa es la pelicula ..", moviesFie)
+
+    dialect = csv.excel()
+    dialect.delimiter=";"
+
+    input_file = csv.DictReader(open(castingFile,encoding="utf-8"),dialect=dialect)
+    for row in input_file:
+        model.Addcasting(cont, row)
+
 
 
 def carga_peliculas(cont, moviesFile):
@@ -57,9 +72,22 @@ def carga_peliculas(cont, moviesFile):
     for row in input_file:
         model.Addpeli(cont, row)
 
+def tamano(cont):
+    #print(model.tamano(cont))
+    pass
+
+
+def peli_director(cont, nombre):
+    return model.peli_director(cont, nombre)
+
         
 
 # ___________________________________________________
 #  Funciones para la carga de datos y almacenamiento
 #  de datos en los modelos
 # ___________________________________________________
+
+
+def buena_peli(cont, castingFile):
+    castingFile = cf.data_dir + castingFile
+    print("funcionaaaa\n")

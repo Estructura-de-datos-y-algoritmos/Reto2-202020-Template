@@ -26,6 +26,7 @@ from DISClib.ADT import list as lt
 from DISClib.DataStructures import listiterator as it
 from App import controller
 assert config
+from time import process_time
 
 """
 La vista se encarga de la interacción con el usuario.
@@ -39,8 +40,8 @@ operación seleccionada.
 # ___________________________________________________
 
 
-moviesFile = 'SmallMoviesDetailsCleaned.csv'
-castingFile ='MoviesCastingRaw-small.csv'
+moviesFile = 'AllMoviesDetailsCleaned.csv'
+castingFile ='AllMoviesCastingRaw.csv'
 
 
 # ___________________________________________________
@@ -66,11 +67,29 @@ def dar_datos(peliculas):
     print("     Idioma: ", primera["original_language"],"\n")
 
 
+def pelis(cont, ids):
+    itera = it.newIterator(ids)
+    lista_p = cont["movies"]
+    while it.hasNext(itera):
+        ID = it.next(itera)
+        posi = lt.isPresent(lista_p, ID)
+        if posi:
+            elemen = lt.getElement(lista_p, posi)
+            if float(elemen["vote_average"]) >= 6:
+                print(elemen["original_title"])
+                print(elemen["vote_average"])
+
+        
+
+    #print(lt.size(ids))
+
+
 
 def printMenu():
     print("Bienvenido")
     print("1- Iniciar Catalogo")
     print("2- Cargar Peliculas")
+    print("3- Encontar buenas peliculas")
     print("0- Salir")
 
 while True:
@@ -84,11 +103,32 @@ while True:
         print(lt.size(cont["movies"]))
 
     elif int(inputs[0]) == 2:
+        t0 = process_time()
         print("Cargando peliculas")
         controller.cargar_datos(cont, moviesFile)
         print("Peliculas cargadas")
         print(lt.size(cont["movies"]))
         dar_datos(cont["movies"])
+        t1 = process_time()
+        t = t1 -t0
+        print("Tiempo de carga de las peliculas: ", t)
+        t2 = process_time()
+        controller.cargar_casting(cont, castingFile)
+        controller.tamano(cont)
+        t3 = process_time()
+        tc = t3-t2
+        T = tc + t
+        print("Tiempo de carga del casting: ", tc)
+        print("Tiempo total: ", T)
+
+    elif int(inputs[0]) == 3:
+        nombre = input("Ingrese el nombre de un director: ")
+        t0 = process_time()
+        ids = controller.peli_director(cont, nombre)
+        pelis(cont, ids)
+        t1 = process_time()
+        t = t1-t0
+        print("Tiempo de carga: ", t)
 
     else:
         sys.exit(0)

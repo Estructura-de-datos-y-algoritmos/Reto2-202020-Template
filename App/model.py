@@ -25,11 +25,7 @@ from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
 assert config
 
-def compareMoviesIds(id1, id2):
-    if id1 > id2:
-        return 1
-    else:
-        return 0
+
 
 
 """
@@ -46,15 +42,37 @@ def newCatalog():
 
   #  print("CREAR Catalogo...")
     
-    catalog = {'movies': None
+    catalog = {'movies': None,
+               'directores': None
           }
 
     catalog['movies'] = lt.newList('SINGLE_LINKED', compareMoviesIds)
+    catalog['directores'] = mp.newMap(100000,
+                                      maptype ='PROBING', 
+                                      loadfactor= 0.4, 
+                                      comparefunction= compareDirectorsByName)
     return catalog
 
 def Addpeli(catalog, row):
     
     lt.addLast(catalog["movies"], row)
+    #CHAINING
+    #PROBING
+
+def Addcasting(catalog, row):
+    directores = catalog["directores"]
+    nombre_director = row["director_name"]
+    existe = mp.contains(directores, nombre_director)
+    if existe:
+        llave_valor = mp.get(directores, nombre_director)
+        valor = me.getValue(llave_valor)
+        lt.addLast(valor, row["id"])
+    else:
+        lista = lt.newList('ARRAY_LIST')
+        lt.addLast(lista, row["id"])
+        mp.put(directores, nombre_director, lista)
+
+
 
 
 # Funciones para agregar informacion al catalogo
@@ -65,10 +83,38 @@ def Addpeli(catalog, row):
 # Funciones de consulta
 # ==============================
 
+def tamano(catalog):
+    return mp.size(catalog["directores"])
 
+
+def peli_director(catalog, nombre):
+    llavev = mp.get(catalog["directores"], nombre)
+    peliculas = me.getValue(llavev)
+    return peliculas
 
 # ==============================
 # Funciones de Comparacion
 # ==============================
 
+def compareMoviesIds(id1, id2):
+    #print("ESTE ES EL ELEMENTO 1!!!", id1)
+    #print("DOS", id2)
+
+    if id1 == id2["\ufeffid"]:
+        return 0
+    else:
+        return 1
+
+def compareDirectorsByName(keyname, director):
+    """
+    Compara dos nombres de autor. El primero es una cadena
+    y el segundo un entry de un map
+    """
+    authentry = me.getKey(director)
+    if (keyname == authentry):
+        return 0
+    elif (keyname > authentry):
+        return 1
+    else:
+        return -1
 
