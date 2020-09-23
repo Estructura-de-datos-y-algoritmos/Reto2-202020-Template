@@ -91,10 +91,11 @@ def cargar_casting(cont, castingFile):
 def ids_peli_director(cont, nombre):
     return model.ids_peli_director(cont, nombre)
 
-
+def ids_peli_actor(cont, nombre):
+    return model.ids_peli_actor(cont,nombre)
 
 def peliculas_por_director(cont, ids):
     return model.buscar_ids_peliculas(cont,ids)
 
 def peliculas_por_actor(cont,ids):
-    return model.buscar_ids_peliculas(cont,ids[0])
+    return model.buscar_ids_peliculas(cont,ids)

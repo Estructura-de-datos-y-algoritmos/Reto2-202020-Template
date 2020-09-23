@@ -23,11 +23,11 @@
 import sys
 import config
 from DISClib.ADT import list as lt
-from DISClib.DataStructures import listiterator as it
 from App import controller
 assert config
 from time import process_time
 from DISClib.ADT import map as mp
+from DISClib.DataStructures import mapentry as me
 
 """
 La vista se encarga de la interacción con el usuario.
@@ -81,8 +81,8 @@ def printMenu():
     print("3- Encontar peliculas por productora")
     print("4- Encontrar peliculas por director")
     print("5- Encontrar peliculas por actor")
-    print("5- Encontrar peliculas por genero")
-    print("6- Encontrar peliculas por pais")
+    print("6- Encontrar peliculas por genero")
+    print("7- Encontrar peliculas por pais")
     print("0- Salir")
 
 while True:
@@ -111,6 +111,21 @@ while True:
         T = tc + t
         print("Tiempo de carga de los directores y actores: ", tc)
         print("Tiempo total: ", T)
+    
+    elif int(inputs[0]) == 3:
+        """
+            Econtrar las peliculas asociadas a una productora de cine
+        """
+        productora = input('Ingrese el nombre de la productora de cine que desea consultar: ')
+        t0 = process_time()
+
+        llave_valor = mp.get(cont['productores'], productora)
+        valor = me.getValue(llave_valor)
+        print(valor)
+        
+        t1 = process_time()
+        T= t1-t0
+        print("Tiempo de carga: ", T)
 
     elif int(inputs[0]) == 4:
         nombre = input("Ingrese el nombre de un director: ")
@@ -120,29 +135,20 @@ while True:
         t1 = process_time()
         t = t1-t0
         print("Tiempo de carga: ", t)
-    
-    elif int(inputs[0]) == 3:
-        """
-            Econtrar las peliculas y su informacion asociada a una productora de cine
-        """
-        productora = input('Ingrese el nombre de la productora de cine que desea consultar: ')
-        t0 = process_time()
-
-        ''''''''''''''''''''''''''''''''''''''''''
-        
-        t1 = process_time()
-        T= t1-t0
-        print("Tiempo de carga: ", T)
 
     elif int(inputs[0]) == 5:
         """
             Conocer a un actor
         """
-        productora = input('Ingrese el nombre de la productora de cine que desea consultar: ')
+        nombre = input('Ingrese el nombre del actor de cine que desea consultar: ')
         t0 = process_time()
 
-        ''''''''''''''''''''''''''''''''''''''''''
-        
+        ids = controller.ids_peli_actor(cont, nombre)
+        controller.peliculas_por_actor(cont, ids)
+
+        llave_valor = mp.get(cont['actores'], nombre)
+        valor = me.getValue(llave_valor)
+        print("El director con el que mas a trabajado es: \n", max(valor[1]))
         t1 = process_time()
         T= t1-t0
         print("Tiempo de carga: ", T)
@@ -151,10 +157,12 @@ while True:
         """
             Entender genero cinematografico
         """
-        productora = input('Ingrese el nombre de la productora de cine que desea consultar: ')
+        genero = input('Ingrese el nombre del genero de cine que desea consultar: ')
         t0 = process_time()
 
-        ''''''''''''''''''''''''''''''''''''''''''
+        llave_valor = mp.get(cont['genre'], genero)
+        valor = me.getValue(llave_valor)
+        print(valor)
         
         t1 = process_time()
         T= t1-t0
@@ -164,10 +172,12 @@ while True:
         """
             Encontrar peliculas por pais
         """
-        productora = input('Ingrese el nombre de la productora de cine que desea consultar: ')
+        pais = input('Ingrese el nombre del pais que desea consultar: ')
         t0 = process_time()
 
-        ''''''''''''''''''''''''''''''''''''''''''
+        llave_valor = mp.get(cont['pais'], pais)
+        valor = me.getValue(llave_valor)
+        print(valor)
         
         t1 = process_time()
         T= t1-t0

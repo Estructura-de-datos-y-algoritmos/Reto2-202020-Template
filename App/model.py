@@ -113,7 +113,7 @@ def Add_pais(catalog,row):
 def Add_genero(catalog,row):
     tabla_generos=catalog["genre"]
     nombres_generos=row["genres"]
-    nombres_generos.split("|")
+    nombres_generos=nombres_generos.split("|")
     for genero in nombres_generos:
         existe=mp.contains(tabla_generos,genero)
         if not existe:
@@ -185,6 +185,10 @@ def ids_peli_director(catalog, nombre):
     llavev = mp.get(catalog["directores"], nombre)
     lista_ids = me.getValue(llavev)
     return lista_ids
+def ids_peli_actor (catalog,nombre):
+    llavev = mp.get(catalog["actores"], nombre)
+    lista_ids = me.getValue(llavev)
+    return lista_ids[0]
 
 def buscar_ids_peliculas(cont, ids):
     itera = it.newIterator(ids)
@@ -196,13 +200,14 @@ def buscar_ids_peliculas(cont, ids):
         
         ID = it.next(itera)
         Nombre_director=mp.get(tabla_pelicula,ID)
-        informacion_director=mp.getValue(Nombre_director)
+        informacion_director=me.getValue(Nombre_director)
         suma_votos+=float(informacion_director["vote_count"])
         nombres_peliculas.append(informacion_director["original_title"])
         numero_peliculas+=1
-    print(nombres_peliculas)
-    print(suma_votos/numero_peliculas)
-    print(numero_peliculas)
+    print("la lista de peliculas es: \n ", nombres_peliculas)
+    print("El total de peliculas es: \n", numero_peliculas)
+    print("el promedio de los votos de las peliculas es: \n", suma_votos/numero_peliculas)
+    
 
 def peliculas_por_actor(cont,ids):
     return print("corregir")  
