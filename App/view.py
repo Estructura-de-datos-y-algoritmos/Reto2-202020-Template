@@ -121,7 +121,7 @@ while True:
         print("Tiempo de carga del casting: ", tc)
         print("Tiempo total: ", T)
 
-    elif int(inputs[0]) == 3:
+    elif int(inputs[0]) == 4:
         nombre = input("Ingrese el nombre de un director: ")
         t0 = process_time()
         ids = controller.peli_director(cont, nombre)
@@ -129,7 +129,58 @@ while True:
         t1 = process_time()
         t = t1-t0
         print("Tiempo de carga: ", t)
+    
+    elif int(inputs[0]) == 3:
+        """
+            Econtrar las peliculas y su informacion asociada a una productora de cine
+        """
+        productora = input('Ingrese el nombre de la productora de cine que desea consultar: ')
+        t0 = process_time()
 
+        ''''''''''''''''''''''''''''''''''''''''''
+        
+        t1 = process_time()
+        T= t1-t0
+        print("Tiempo de carga: ", T)
+
+    elif int(inputs[0]) == 5:
+        """
+            Conocer a un actor
+        """
+        productora = input('Ingrese el nombre de la productora de cine que desea consultar: ')
+        t0 = process_time()
+
+        ''''''''''''''''''''''''''''''''''''''''''
+        
+        t1 = process_time()
+        T= t1-t0
+        print("Tiempo de carga: ", T)
+    
+    elif int(inputs[0]) == 6:
+        """
+            Entender genero cinematografico
+        """
+        productora = input('Ingrese el nombre de la productora de cine que desea consultar: ')
+        t0 = process_time()
+
+        ''''''''''''''''''''''''''''''''''''''''''
+        
+        t1 = process_time()
+        T= t1-t0
+        print("Tiempo de carga: ", T)
+    
+    elif int(inputs[0]) == 7:
+        """
+            Encontrar peliculas por pais
+        """
+        productora = input('Ingrese el nombre de la productora de cine que desea consultar: ')
+        t0 = process_time()
+
+        ''''''''''''''''''''''''''''''''''''''''''
+        
+        t1 = process_time()
+        T= t1-t0
+        print("Tiempo de carga: ", T)
     else:
         sys.exit(0)
 sys.exit(0)

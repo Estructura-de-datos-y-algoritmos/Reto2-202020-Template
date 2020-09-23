@@ -43,24 +43,7 @@ def iniciarC():
 
 
 def cargar_datos(cont, moviesFile):
-    carga_peliculas(cont, moviesFile)
-
-
-
-def cargar_casting(cont, castingFile):
-    castingFile = cf.data_dir + castingFile
-    #print("ESTa es la pelicula ..", moviesFie)
-
-    dialect = csv.excel()
-    dialect.delimiter=";"
-
-    input_file = csv.DictReader(open(castingFile,encoding="utf-8"),dialect=dialect)
-    for row in input_file:
-        model.Addcasting(cont, row)
-
-
-
-def carga_peliculas(cont, moviesFile):
+    """Cargar las listas que se relaciones con el archivo movies details"""
     moviesFile = cf.data_dir + moviesFile
     #print("ESTa es la pelicula ..", moviesFie)
 
@@ -70,7 +53,38 @@ def carga_peliculas(cont, moviesFile):
     input_file = csv.DictReader(open(moviesFile,encoding="utf-8"),dialect=dialect)
 
     for row in input_file:
+        #Aqui se cargara las peliculas segun su id, en enlazadas con su informacion
+        model.
+
+        #Aqui se cargara las productoras
+
+
+        #Aqui se cargara los generon
+
+
+        #Aqui se cargara las paises
         model.Addpeli(cont, row)
+
+
+
+def cargar_casting(cont, castingFile):
+    """Cargar las listas relacionadas con el archivo Casting raw"""
+    castingFile = cf.data_dir + castingFile
+    #print("ESTa es la pelicula ..", moviesFie)
+
+    dialect = csv.excel()
+    dialect.delimiter=";"
+
+    input_file = csv.DictReader(open(castingFile,encoding="utf-8"),dialect=dialect)
+    for row in input_file:
+
+        #Aqui se cargara las directores
+
+
+        #Aqui se cargara las actores
+        
+        model.Add_director(cont, row)
+
 
 def tamano(cont):
     #print(model.tamano(cont))
@@ -80,14 +94,3 @@ def tamano(cont):
 def peli_director(cont, nombre):
     return model.peli_director(cont, nombre)
 
-        
-
-# ___________________________________________________
-#  Funciones para la carga de datos y almacenamiento
-#  de datos en los modelos
-# ___________________________________________________
-
-
-def buena_peli(cont, castingFile):
-    castingFile = cf.data_dir + castingFile
-    print("funcionaaaa\n")

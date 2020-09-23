@@ -43,10 +43,16 @@ def newCatalog():
   #  print("CREAR Catalogo...")
     
     catalog = {'movies': None,
-               'directores': None
+               'productoras': None,
+               'pais': None
+               'genre':None,
+
+               'directores':None,
+               'actores':None,
           }
 
     catalog['movies'] = lt.newList('SINGLE_LINKED', compareMoviesIds)
+    catalog['productoras']= mp.newMap(200000, maptype='CHAINING', loadfactor=1,comparefunction=    )
     catalog['directores'] = mp.newMap(100000,
                                       maptype ='PROBING', 
                                       loadfactor= 0.4, 
@@ -59,7 +65,7 @@ def Addpeli(catalog, row):
     #CHAINING
     #PROBING
 
-def Addcasting(catalog, row):
+def Add_director(catalog, row):
     directores = catalog["directores"]
     nombre_director = row["director_name"]
     existe = mp.contains(directores, nombre_director)
@@ -117,4 +123,3 @@ def compareDirectorsByName(keyname, director):
         return 1
     else:
         return -1
-
