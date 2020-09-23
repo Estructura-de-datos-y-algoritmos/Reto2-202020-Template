@@ -78,7 +78,11 @@ def printMenu():
     print("Bienvenido")
     print("1- Iniciar Catalogo")
     print("2- Cargar Peliculas")
-    print("3- Encontar buenas peliculas")
+    print("3- Encontar peliculas por productora")
+    print("4- Encontrar peliculas por director")
+    print("5- Encontrar peliculas por actor")
+    print("5- Encontrar peliculas por genero")
+    print("6- Encontrar peliculas por pais")
     print("0- Salir")
 
 while True:

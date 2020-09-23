@@ -23,6 +23,7 @@ import config
 from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
+from DISClib.DataStructures import listiterator as it
 assert config
 
 
@@ -63,7 +64,7 @@ def newCatalog():
 
 def Addpeli(catalog, row):
     peliculas = catalog['movies']
-    id_pelicula= row['id']
+    id_pelicula= row["\ufeffid"]
     existe = mp.contains(peliculas,id_pelicula)
     if existe:
        return print('id repetido / imposible')
@@ -104,7 +105,7 @@ def Add_pais(catalog,row):
         mp.put(paises,nombre_pais,informacion_pais)
     elif existe:
         llave_valor= mp.get(paises,nombre_pais)
-        informacion_pais=mp.getValue(llave_valor)
+        informacion_pais=me.getValue(llave_valor)
         informacion_pais["informacion_pelicula"].append((row["original_title"],row["release_date"]))
         mp.put(paises,nombre_pais,informacion_pais)
     
@@ -133,22 +134,23 @@ def Add_actor(catalog,row):
     lista_actores=catalog["actores"]
     for num_actor in range(1,6):
         actor="actor{num}_name".format(num=num_actor)
-        nombre_actor=row["actor"]
+        nombre_actor=row[actor]
         existe=mp.contains(lista_actores,nombre_actor)
         if not existe:
             lista_ids = lt.newList('ARRAY_LIST')
             lt.addLast(lista_ids, row["id"])
-            colaboraciones={row["director_name"]:1}
+            colaboraciones={}
+            colaboraciones[row["director_name"]]=1
             informacion_actor=[lista_ids,colaboraciones]
-            mp.put(directores, nombre_director, informacion_actor)
+            mp.put(lista_actores, nombre_actor, informacion_actor)
         elif existe:
-            llave_valor = mp.get(directores, nombre_director)
+            llave_valor = mp.get(lista_actores, nombre_actor)
             valor = me.getValue(llave_valor)
             lt.addLast(valor[0], row["id"])
             if row["director_name"] in valor[1]:
-                valor[1]["director_name"]+=1
+                valor[1][row["director_name"]]+=1
             elif not row["director_name"] in valor[1]:
-                valor[1]["director_name"]=1
+                valor[1][row["director_name"]]=1
             
 
             
@@ -210,14 +212,15 @@ def peliculas_por_actor(cont,ids):
 # Funciones de Comparacion
 # ==============================
 
-def compareMoviesIds(id1, id2):
-    #print("ESTE ES EL ELEMENTO 1!!!", id1)
-    #print("DOS", id2)
+def compareMoviesIds(keyname, ids):
 
-    if id1 == id2["\ufeffid"]:
+    authentry = me.getKey(ids)
+    if (keyname == authentry):
         return 0
-    else:
+    elif (keyname > authentry):
         return 1
+    else:
+        return -1
 
 def compareDirectorsByName(keyname, director):
     """
