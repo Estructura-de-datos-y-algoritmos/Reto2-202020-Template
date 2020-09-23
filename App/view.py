@@ -27,6 +27,7 @@ from DISClib.DataStructures import listiterator as it
 from App import controller
 assert config
 from time import process_time
+from DISClib.ADT import map as mp
 
 """
 La vista se encarga de la interacción con el usuario.
@@ -67,18 +68,6 @@ def dar_datos(peliculas):
     print("     Idioma: ", primera["original_language"],"\n")
 
 
-def pelis(cont, ids):
-    itera = it.newIterator(ids)
-    lista_p = cont["movies"]
-    while it.hasNext(itera):
-        ID = it.next(itera)
-        posi = lt.isPresent(lista_p, ID)
-        if posi:
-            elemen = lt.getElement(lista_p, posi)
-            if float(elemen["vote_average"]) >= 6:
-                print(elemen["original_title"])
-                print(elemen["vote_average"])
-
         
 
     #print(lt.size(ids))
@@ -100,32 +89,30 @@ while True:
         print("Inicializando Catálogo ....")
         # cont es el controlador que se usará de acá en adelante
         cont = controller.iniciarC()
-        print(lt.size(cont["movies"]))
+        print(mp.size(cont["movies"]))
 
     elif int(inputs[0]) == 2:
         t0 = process_time()
         print("Cargando peliculas")
         controller.cargar_datos(cont, moviesFile)
         print("Peliculas cargadas")
-        print(lt.size(cont["movies"]))
-        dar_datos(cont["movies"])
+        print(mp.size(cont["movies"]))
         t1 = process_time()
         t = t1 -t0
-        print("Tiempo de carga de las peliculas: ", t)
+        print("Tiempo de carga de las peliculas, productoras, generos y paises: ", t)
         t2 = process_time()
         controller.cargar_casting(cont, castingFile)
-        controller.tamano(cont)
         t3 = process_time()
         tc = t3-t2
         T = tc + t
-        print("Tiempo de carga del casting: ", tc)
+        print("Tiempo de carga de los directores y actores: ", tc)
         print("Tiempo total: ", T)
 
     elif int(inputs[0]) == 4:
         nombre = input("Ingrese el nombre de un director: ")
         t0 = process_time()
-        ids = controller.peli_director(cont, nombre)
-        pelis(cont, ids)
+        ids = controller.ids_peli_director(cont, nombre)
+        controller.peliculas_por_director(cont, ids)
         t1 = process_time()
         t = t1-t0
         print("Tiempo de carga: ", t)

@@ -53,17 +53,19 @@ def cargar_datos(cont, moviesFile):
     input_file = csv.DictReader(open(moviesFile,encoding="utf-8"),dialect=dialect)
 
     for row in input_file:
-        #Aqui se cargara las peliculas segun su id, en enlazadas con su informacion
-        model.
 
         #Aqui se cargara las productoras
+        model.Add_productora(cont,row)
 
-
-        #Aqui se cargara los generon
-
+        #Aqui se cargara los generos
+        model.Add_genero(cont,row)
 
         #Aqui se cargara las paises
+        model.Add_pais(cont,row)
+
+        #aqui se carga la lista de peliculas
         model.Addpeli(cont, row)
+
 
 
 
@@ -79,18 +81,20 @@ def cargar_casting(cont, castingFile):
     for row in input_file:
 
         #Aqui se cargara las directores
-
+        model.Add_actor(cont,row)
 
         #Aqui se cargara las actores
-        
         model.Add_director(cont, row)
 
 
-def tamano(cont):
-    #print(model.tamano(cont))
-    pass
+
+def ids_peli_director(cont, nombre):
+    return model.ids_peli_director(cont, nombre)
 
 
-def peli_director(cont, nombre):
-    return model.peli_director(cont, nombre)
 
+def peliculas_por_director(cont, ids):
+    return model.buscar_ids_peliculas(cont,ids)
+
+def peliculas_por_actor(cont,ids):
+    return model.buscar_ids_peliculas(cont,ids[0])
